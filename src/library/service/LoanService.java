@@ -62,9 +62,10 @@ public class LoanService implements Observable {
         }
     }
 
-    public void borrowBook(MemberUser member, Book book, LocalDate dueDate) {
+    public void borrowBook(MemberUser member, Book book) {
         if (book.isAvailable()) {
-            Loan loan = new Loan(member, book, dueDate.plusDays(10));
+            LocalDate dueDate = LocalDate.now().plusDays(10);
+            Loan loan = new Loan(member, book, dueDate);
             activeLoans.add(loan);
             addDueDateObserver(member);
             book.borrow();

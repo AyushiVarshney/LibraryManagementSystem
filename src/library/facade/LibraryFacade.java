@@ -110,7 +110,7 @@ public class LibraryFacade {
         Book book = bookService.findBookByTitle(title);
         User user = userService.findUserByName(userName);
         if(book != null && user != null){
-            loanService.borrowBook((MemberUser) user, book, LocalDate.now());
+            loanService.borrowBook((MemberUser) user, book);
         }
     }
 
