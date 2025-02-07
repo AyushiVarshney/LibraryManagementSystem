@@ -95,7 +95,7 @@ public class LibraryFacade {
         List<Book> books = this.getBooks();
         BookIterator iterator = new BookIterator(books);
         if(iterator.hasNext()) {
-            System.out.println("Below is list of all the available books :");
+            System.out.println("Below is list of all books :");
         }
         while (iterator.hasNext()) {
             Book book = iterator.next();
