@@ -51,17 +51,17 @@ public class UI {
     }
 
     public static String getISBNFromUser(Scanner scanner) {
-        System.out.println("Enter ISBN for book which you want to remove: ");
+        System.out.print("Enter ISBN for book which you want to remove: ");
         return scanner.nextLine();
     }
 
     public static String getTitleFromUser(Scanner scanner, int choice) {
         if(choice == 6)
-            System.out.println("Enter title of book to borrow: ");
+            System.out.print("Enter title of book to borrow: ");
         else if(choice == 7)
-            System.out.println("Enter title of book to return: ");
+            System.out.print("Enter title of book to return: ");
         else if(choice == 8)
-            System.out.println("Enter title of book to reserve: ");
+            System.out.print("Enter title of book to reserve: ");
         return scanner.nextLine();
     }
 

@@ -14,13 +14,9 @@ import library.service.BookService;
 import library.service.LoanService;
 import library.service.UserService;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class LibraryFacade {
     private LoanService loanService;
@@ -62,15 +58,17 @@ public class LibraryFacade {
         BookIterator iterator = new BookIterator(books);
         if(iterator.hasNext()) {
             System.out.println("Below are the borrowed books :");
-        }
-        while (iterator.hasNext()) {
-            Book book = iterator.next();
-            if (!book.isAvailable()) {
-                System.out.println("Title: " + book.getTitle()
-                        + ", Author: " + book.getAuthor()
-                        + ", ISBN: " + book.getIsbn()
-                        + ", Available: " + (book.isAvailable() ? "Yes" : "No"));
+            while (iterator.hasNext()) {
+                Book book = iterator.next();
+                if (!book.isAvailable()) {
+                    System.out.println("Title: " + book.getTitle()
+                            + ", Author: " + book.getAuthor()
+                            + ", ISBN: " + book.getIsbn()
+                            + ", Available: " + (book.isAvailable() ? "Yes" : "No"));
+                }
             }
+        } else {
+            System.out.println("There are no books available");
         }
     }
 
@@ -79,15 +77,17 @@ public class LibraryFacade {
         BookIterator iterator = new BookIterator(books);
         if(iterator.hasNext()) {
             System.out.println("Below are the available books :");
-        }
-        while (iterator.hasNext()) {
-            Book book = iterator.next();
-            if (book.isAvailable()) {
-                System.out.println("Title: " + book.getTitle()
-                        + ", Author: " + book.getAuthor()
-                        + ", ISBN: " + book.getIsbn()
-                        + ", Available: " + (book.isAvailable() ? "Yes" : "No"));
+            while (iterator.hasNext()) {
+                Book book = iterator.next();
+                if (book.isAvailable()) {
+                    System.out.println("Title: " + book.getTitle()
+                            + ", Author: " + book.getAuthor()
+                            + ", ISBN: " + book.getIsbn()
+                            + ", Available: " + (book.isAvailable() ? "Yes" : "No"));
+                }
             }
+        } else {
+            System.out.println("There are no books available");
         }
     }
 
@@ -96,35 +96,34 @@ public class LibraryFacade {
         BookIterator iterator = new BookIterator(books);
         if(iterator.hasNext()) {
             System.out.println("Below is list of all books :");
-        }
-        while (iterator.hasNext()) {
-            Book book = iterator.next();
-            System.out.println("Title: " + book.getTitle()
-                    + ", Author: " + book.getAuthor()
-                    + ", ISBN: " + book.getIsbn()
-                    + ", Available: " + (book.isAvailable() ? "Yes" : "No"));
+            while (iterator.hasNext()) {
+                Book book = iterator.next();
+                System.out.println("Title: " + book.getTitle()
+                        + ", Author: " + book.getAuthor()
+                        + ", ISBN: " + book.getIsbn()
+                        + ", Available: " + (book.isAvailable() ? "Yes" : "No"));
+            }
+        } else {
+            System.out.println("There are no books available");
         }
     }
 
-    public void borrowBook(String userName, String title){
-        Book book = bookService.findBookByTitle(title);
-        User user = userService.findUserByName(userName);
-        if(book != null && user != null){
+    public void borrowBook(User user, String title){
+        if(Objects.nonNull(user)) {
+            Book book = bookService.findBookByTitle(title);
             loanService.borrowBook((MemberUser) user, book);
         }
     }
 
-    public void returnBook(String userName, String title){
-        Book book = bookService.findBookByTitle(title);
-        User user = userService.findUserByName(userName);
-        if(book != null && user != null){
+    public void returnBook(User user, String title){
+        if(Objects.nonNull(user)) {
+            Book book = bookService.findBookByTitle(title);
             loanService.returnBook((MemberUser) user, book);
         }
     }
 
-    public void reserveBook(String userName, String title) {
+    public void reserveBook(User user, String title) {
         Book book = bookService.findBookByTitle(title);
-        User user = userService.findUserByName(userName);
         if(book != null && user != null){
             Reservable res = new ReservableBookDecorator(book);
             res.reserve((MemberUser) user);

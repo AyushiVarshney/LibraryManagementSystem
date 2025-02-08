@@ -30,7 +30,6 @@ public class LibraryApp {
     public static void main(String[] args) {
         System.out.println("Welcome to Library Management System");
         user = loginOrSignup();
-        scheduler.scheduleDueNotifications();
         if(!userService.getUsers().isEmpty()) {
             while (true) {
                 if(user != null && user.getRole().equalsIgnoreCase("librarian")) {
@@ -77,17 +76,18 @@ public class LibraryApp {
             }
             case 6: {
                 String title = UI.getTitleFromUser(scanner, choice);
-                libraryFacade.borrowBook(userName, title);
+                libraryFacade.borrowBook(user, title);
                 break;
             }
             case 7: {
                 String title = UI.getTitleFromUser(scanner, choice);
-                libraryFacade.returnBook(userName, title);
+                libraryFacade.returnBook(user, title);
                 break;
             }
             case 8: {
                 String title = UI.getTitleFromUser(scanner, choice);
-                libraryFacade.reserveBook(userName, title);
+                libraryFacade.reserveBook(user, title);
+                scheduler.scheduleDueNotifications();
                 break;
             }
             case 9: {

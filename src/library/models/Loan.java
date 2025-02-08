@@ -27,6 +27,10 @@ public class Loan {
         return dueDate;
     }
 
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
     public boolean isReturned() {
         return returned;
     }

@@ -2,6 +2,8 @@ package library.models;
 
 import library.decorator.Reservable;
 
+import java.util.Objects;
+
 public class Book implements Reservable {
     private String title;
     private String author;
@@ -83,5 +85,18 @@ public class Book implements Reservable {
                 ", category='" + category + '\'' +
                 ", isAvailable=" + isAvailable +
                 '}';
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(this.title);
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(o == null) return false;
+        if(getClass() != o.getClass()) return false;
+        final Book other = (Book) o;
+        return Objects.equals(other.getTitle(), this.getTitle());
     }
 }

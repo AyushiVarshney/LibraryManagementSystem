@@ -19,10 +19,10 @@ public class UserService {
         }
     }
 
-    public User findUserByName(String name) {
+    public User findUserByName(String name, String role) {
         return users
                 .stream()
-                .filter(u -> u.getName().equalsIgnoreCase(name))
+                .filter(u -> u.getName().equalsIgnoreCase(name) && u.getRole().equalsIgnoreCase(role))
                 .findFirst()
                 .orElse(null);
     }

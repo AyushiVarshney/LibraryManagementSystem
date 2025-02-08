@@ -51,7 +51,7 @@ public class LoanService implements Observable {
     @Override
     public void notifyDueSoonObservers(Book book) {
         for (Observer observer : dueDateObservers) {
-            observer.update(book, "Your book '" + book.getTitle() + "' is due in 3 days!");
+            observer.update(book, "Your book '" + book.getTitle() + "' is due soon!");
         }
     }
 
@@ -63,16 +63,20 @@ public class LoanService implements Observable {
     }
 
     public void borrowBook(MemberUser member, Book book) {
-        if (book.isAvailable()) {
-            LocalDate dueDate = LocalDate.now().plusDays(10);
-            Loan loan = new Loan(member, book, dueDate);
-            activeLoans.add(loan);
-            addDueDateObserver(member);
-            book.borrow();
-            System.out.println("Book '" + book.getTitle() + "' borrowed by " + member.getName() +
-                    ". Due date: " + dueDate);
+        if(book != null) {
+            if (book.isAvailable()) {
+                LocalDate dueDate = LocalDate.now().plusDays(10);
+                Loan loan = new Loan(member, book, dueDate);
+                activeLoans.add(loan);
+                addDueDateObserver(member);
+                book.borrow();
+                System.out.println("Book '" + book.getTitle() + "' borrowed by " + member.getName() +
+                        ". Due date: " + dueDate);
+            } else {
+                System.out.println("Book '" + book.getTitle() + "' is not available.");
+            }
         } else {
-            System.out.println("Book '" + book.getTitle() + "' is not available.");
+            System.out.println("No such book found");
         }
     }
 
@@ -95,9 +99,10 @@ public class LoanService implements Observable {
         }
     }
 
-    public void checkForDueDates() {
+    public void checkForDueDates(LocalDate forTestingOnly) {
         for (Loan loan : activeLoans) {
             if (!loan.isReturned()) {
+                loan.setDueDate(forTestingOnly);
                 if (isOverdue(loan)) {
                     notifyOverdueObservers(loan.getBook());
                 } else if (isDueSoon(loan)) {

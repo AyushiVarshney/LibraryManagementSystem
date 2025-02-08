@@ -9,6 +9,10 @@ public class BookService {
     private final LibraryCatalogue catalogue = LibraryCatalogue.getLibraryCatalogueInstance();
 
     public void addBook(Book book) {
+        if(catalogue.getBooks().contains(book)) {
+            System.out.println("Book " + book.getTitle() + " already exist");
+            return;
+        }
         catalogue.addBook(book);
     }
 
@@ -24,8 +28,8 @@ public class BookService {
         return null;
     }
 
-    public void removeBook(Book book) {
-        catalogue.getBooks().remove(book);
+    public boolean removeBook(Book book) {
+        return catalogue.getBooks().remove(book);
     }
 
     public List<Book> getAllBooks() {
